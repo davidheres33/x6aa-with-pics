@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
             '2000': '2,000 Followers',
             '5000': '5,000 Followers',
             '10000': '10,000 Followers',
-            '20000': '20,000 Followers'
+            '20000': '20,000 Followers',
+            '100000': '100,000 Followers'
         },
         gamerscore: {
             '50000': '50,000 GS',
