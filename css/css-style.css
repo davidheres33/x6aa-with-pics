@@ -1,0 +1,70 @@
+.item_wrp {
+    position: relative;
+    transition: 0.3s ease all;
+    border-radius: 6px;
+    margin: 5px;
+}
+
+.item_wrp:hover {
+    box-shadow: 0 0 10px 0 aqua;
+}
+
+.title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #0000007d;
+    margin: 0;
+    font-size: 100%;
+    padding: 15px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.item_wrp:focus h1.title,
+.item_wrp:hover h1.title {
+    display: block;
+}
+
+.owl-dots {
+    display: none;
+}
+
+.owl-nav {
+    display: none;
+}
+
+.item img {
+    border-radius: 6px;
+}
+
+.downloadbtnSpan {
+    position: absolute;
+    bottom: 13px;
+    right: 13px;
+    background: #000000a6;
+    color: #fff;
+    display: flex;
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+/* Mobil görünüm için */
+@media (max-width: 768px) {
+    .downloadbtnSpan {
+        bottom: 2px;
+        right: 3px;
+    }
+
+    .title {
+        height: 30px;
+        padding: 5px;
+        font-size: 12px;
+    }
+}
