@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'lifetime': 'Lifetime'
         },
         rareGamertag: {
+            '5-Letter': '5-Letter Gamertag',
             '4-Character': '4-Character Gamertag',
             '4-letter': '4-Letter Gamertag',
             '3-Character': '3-Character Gamertag',
