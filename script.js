@@ -416,6 +416,14 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
+    // Toggle info text for Follower Boost Manager
+    window.toggleInfo = function() {
+        const infoText = document.getElementById('info-text');
+        if (infoText) {
+            infoText.style.display = infoText.style.display === 'none' ? 'block' : 'none';
+        }
+    };
+
     const accordionHeaders = document.querySelectorAll('.accordion-header');
     accordionHeaders.forEach(header => {
         header.addEventListener('click', function() {
