@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sharkCard: document.getElementById('sharkCardModal'),
         followerBot: document.getElementById('followerBotModal'),
         messageSpammer: document.getElementById('messageSpammerModal'),
-        profilePicture: document.getElementById('profilePictureCheckoutModal')
+        profilePicture: document.getElementById('profilePictureCheckoutModal'),
+        forzaCredits: document.getElementById('forzaCreditsModal')
     };
 
     // Open modal function
@@ -132,6 +133,12 @@ document.addEventListener('DOMContentLoaded', () => {
             'weekly': 'Weekly',
             'monthly': 'Monthly',
             'lifetime': 'Lifetime'
+        },
+        forzaCredits: {
+            '100M': '100 Million Credits',
+            '200M': '200 Million Credits',
+            '300M': '300 Million Credits',
+            '500M': '500 Million Credits'
         }
     };
 
@@ -172,6 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.querySelectorAll('.profile-picture-purchase-btn').forEach(btn => {
         btn.addEventListener('click', () => openModal(modals.profilePicture));
+    });
+    document.querySelectorAll('.forza-credits-purchase-btn').forEach(btn => {
+        btn.addEventListener('click', () => openModal(modals.forzaCredits));
     });
 
     // Payment method selection
@@ -244,6 +254,12 @@ document.addEventListener('DOMContentLoaded', () => {
             inputs: ['profile-picture-checkout-gamertag', 'profile-picture-checkout-link'],
             tosCheckbox: 'profile-picture-checkout-tos-agreement',
             productName: 'Classic Xbox Profile Picture'
+        },
+        forzaCredits: {
+            selector: '#forzaCreditsModal .forza-credits-purchase-btn',
+            inputs: ['forza-credits-gamertag'],
+            tosCheckbox: 'forza-credits-tos-agreement',
+            productName: 'Forza Horizon 5 Credits'
         }
     };
 
@@ -412,6 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
     // Newsletter form submission
     const newsletterForm = document.querySelector('.newsletter-form');
     if (newsletterForm) {
