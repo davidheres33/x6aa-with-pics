@@ -14,14 +14,32 @@ document.addEventListener('DOMContentLoaded', () => {
         followerBot: document.getElementById('followerBotModal'),
         messageSpammer: document.getElementById('messageSpammerModal'),
         profilePicture: document.getElementById('profilePictureCheckoutModal'),
-        forzaCredits: document.getElementById('forzaCreditsModal')
+        forzaCredits: document.getElementById('forzaCreditsModal'),
+        gtFourLetter: document.getElementById('gt-fourLetterModal')
     };
+
+    // Store selected gamertag
+    let selectedGamertag = null;
 
     // Open modal function
     function openModal(modal) {
         if (modal) {
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
+            // Fetch gamertags if the 4-Letter Gamertag modal is opened
+            if (modal.id === 'gt-fourLetterModal') {
+                fetchGtGamertags();
+            }
+            // Update package display in rareGamertagModal if 4-Letter is selected
+            if (modal.id === 'rareGamertagModal') {
+                const activeOption = modal.querySelector('.package-option.active');
+                if (activeOption && activeOption.getAttribute('data-amount') === '4-letter' && selectedGamertag) {
+                    const selectedPackage = modal.querySelector('.selected-package');
+                    if (selectedPackage) {
+                        selectedPackage.textContent = selectedGamertag;
+                    }
+                }
+            }
         }
     }
 
@@ -34,9 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Modal close buttons
-    document.querySelectorAll('.modal-close').forEach(button => {
+    document.querySelectorAll('.modal-close, .gt-modal-close').forEach(button => {
         button.addEventListener('click', () => {
-            const modal = button.closest('.modal-overlay');
+            const modal = button.closest('.modal-overlay, .gt-modal-overlay');
             closeModal(modal);
         });
     });
@@ -50,6 +68,93 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+    });
+
+    // Function to show temporary notification
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'gamertag-notification';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                notification.remove();
+            }, 300); // Match transition duration
+        }, 3000); // Show for 3 seconds
+    }
+
+    // Fetch gamertags for 4-Letter Gamertag modal
+    function fetchGtGamertags() {
+        const gamertagUrl = 'https://raw.githubusercontent.com/x6aa/gamertags/refs/heads/main/gamertags.txt';
+        const gamertagList = document.getElementById('gt-gamertag-list');
+        if (!gamertagList) return;
+
+        gamertagList.innerHTML = '<p>Loading gamertags...</p>';
+
+        fetch(gamertagUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                const gamertags = data.split('\n').filter(tag => tag.trim() !== '');
+                const ul = document.createElement('ul');
+                gamertags.forEach(tag => {
+                    const li = document.createElement('li');
+                    li.textContent = tag.trim();
+                    li.style.cursor = 'pointer';
+                    li.addEventListener('click', () => {
+                        // Set selected gamertag and update UI
+                        selectedGamertag = tag.trim();
+                        // Highlight selected gamertag
+                        ul.querySelectorAll('li').forEach(item => {
+                            item.style.backgroundColor = '';
+                            item.style.fontWeight = '';
+                        });
+                        li.style.backgroundColor = '#e0e0e0';
+                        li.style.fontWeight = 'bold';
+                        // Updated: Show notification with professional text
+                        showNotification(`${selectedGamertag} Selected Successfully!`);
+                        // Open rareGamertagModal with 4-Letter option selected
+                        const rareGamertagModal = modals.rareGamertag;
+                        if (rareGamertagModal) {
+                            const fourLetterOption = rareGamertagModal.querySelector('.package-option[data-amount="4-letter"]');
+                            if (fourLetterOption) {
+                                rareGamertagModal.querySelectorAll('.package-option').forEach(opt => opt.classList.remove('active'));
+                                fourLetterOption.classList.add('active');
+                                const selectedPackage = rareGamertagModal.querySelector('.selected-package');
+                                const selectedPrice = rareGamertagModal.querySelector('.selected-price');
+                                const totalPrice = rareGamertagModal.querySelector('.total-price');
+                                if (selectedPackage && selectedPrice && totalPrice) {
+                                    selectedPackage.textContent = selectedGamertag;
+                                    const price = fourLetterOption.getAttribute('data-price');
+                                    selectedPrice.textContent = `$${price}`;
+                                    totalPrice.textContent = `$${price}`;
+                                }
+                                openModal(rareGamertagModal);
+                            }
+                        }
+                        closeModal(modals.gtFourLetter);
+                    });
+                    ul.appendChild(li);
+                });
+                gamertagList.innerHTML = '';
+                gamertagList.appendChild(ul);
+            })
+            .catch(error => {
+                gamertagList.innerHTML = '<p>Error loading gamertags: ' + error.message + '. Please try again later or contact support.</p>';
+                console.error('Fetch Error:', error);
+            });
+    }
+
+    // Add event listener for 4-Letter Gamertag info button
+    document.querySelectorAll('.gt-info-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            openModal(modals.gtFourLetter);
+        });
     });
 
     // Package selection logic
@@ -67,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.classList.add('active');
                 const amount = option.getAttribute('data-amount');
                 const price = option.getAttribute('data-price');
-                selectedPackage.textContent = packageData[amount] || amount;
+                selectedPackage.textContent = (amount === '4-letter' && selectedGamertag) ? selectedGamertag : (packageData[amount] || amount);
                 selectedPrice.textContent = `$${price}`;
                 totalPrice.textContent = `$${price}`;
             });
@@ -321,7 +426,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Gather data for checkout
                 const price = parseFloat(selectedPackage.dataset.price);
-                const productName = purchaseHandlers[key].productName;
+                let productName = purchaseHandlers[key].productName;
+                if (key === 'rareGamertag' && selectedPackage.getAttribute('data-amount') === '4-letter' && selectedGamertag) {
+                    productName = selectedGamertag;
+                }
                 const inputValues = {};
                 inputs.forEach(input => {
                     inputValues[input.id] = input.value;
@@ -359,6 +467,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (session.url) {
                         window.location.href = session.url;
+                        if (key === 'rareGamertag' && selectedPackage.getAttribute('data-amount') === '4-letter') {
+                            selectedGamertag = null;
+                        }
                     } else {
                         alert('Failed to create checkout session. Please try again.');
                         this.classList.remove('disabled');
