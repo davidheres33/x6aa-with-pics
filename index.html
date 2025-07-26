@@ -1617,18 +1617,36 @@
                             <p>Example: jdi3, ad8b, d93h</p>
                         </div>
                     </div>
-                    <div class="package-option active" data-amount="4-letter" data-price="57.99">
-                        <div class="option-header">
-                            <h4>4-Letter Gamertag</h4>
-                            <div class="option-price">$57.99</div>
-                        </div>
-                        <div class="option-features">
-                            <p>Rare 4-letter gamertag</p>
-                            <p>Consists of letters only</p>
-                            <p>Delivered within 24 hours</p>
-                            <p>Example: dbsi, jikm, gghg</p>
-                        </div>
-                    </div>
+<div class="package-option active" data-amount="4-letter" data-price="57.99">
+    <div class="option-header">
+        <div class="section_title_wrapper">
+            <h4 class="section_title">4-Letter Gamertag</h4>
+            <button class="gt-info-btn" onclick="openGtModal('gt-fourLetterModal')"><i>i</i></button>
+        </div>
+        <div class="option-price">$57.99</div>
+    </div>
+    <div class="option-features">
+        <p>Rare 4-letter gamertag</p>
+        <p>Consists of letters only</p>
+        <p>Delivered within 24 hours</p>
+        <p>Example: dbsi, jikm, gghg</p>
+    </div>
+</div>
+
+<!-- Modal for 4-Letter Gamertags -->
+<div id="gt-fourLetterModal" class="gt-modal-overlay">
+    <div class="gt-modal-content">
+        <div class="gt-modal-header">
+            <h3>4-Letter Gamertags List</h3>
+            <button class="gt-modal-close" onclick="closeGtModal('gt-fourLetterModal')">&times;</button>
+        </div>
+        <div class="gt-modal-body">
+            <div id="gt-gamertag-list" class="gt-gamertag-container">
+                <p>Loading gamertags...</p>
+            </div>
+        </div>
+    </div>
+</div>
                     <div class="package-option" data-amount="3-Character" data-price="195.99">
                         <div class="option-header">
                             <h4>3-Character Gamertag</h4>
