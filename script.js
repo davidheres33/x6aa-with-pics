@@ -391,18 +391,26 @@ document.addEventListener('DOMContentLoaded', () => {
         // Replace with additional payment gateway logic if needed
     };
 
-    // Announcement banner close
+    // Announcement banner logic
     const announcementBanner = document.getElementById('announcementBanner');
-    const closeAnnouncement = document.getElementById('closeAnnouncement');
-    if (closeAnnouncement) {
-        closeAnnouncement.addEventListener('click', () => {
-            announcementBanner.classList.add('hide');
-            setTimeout(() => {
-                announcementBanner.style.display = 'none';
-                announcementBanner.classList.remove('hide');
-            }, 500);
-        });
+    const closeButton = document.getElementById('closeAnnouncement');
+
+    if (!announcementBanner || !closeButton) {
+        console.error('Announcement banner or close button not found');
+        return;
     }
+
+    setTimeout(() => {
+        announcementBanner.style.display = 'flex';
+    }, 3000);
+
+    closeButton.addEventListener('click', () => {
+        announcementBanner.classList.add('hide');
+        setTimeout(() => {
+            announcementBanner.style.display = 'none';
+            announcementBanner.classList.remove('hide');
+        }, 500);
+    });
 
     // Back to top button
     const backToTop = document.querySelector('.back-to-top');
