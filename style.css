@@ -2541,3 +2541,52 @@ a{
     font-size: 16px;
     font-weight: bold;
 }
+
+
+.gt-gamertag-container ul li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: var(--dark);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.gt-gamertag-container ul li:hover {
+    background-color: rgba(91, 201, 91, 0.2); /* Slightly stronger green tint on hover */
+}
+
+.gt-gamertag-container ul li span:first-child {
+    flex: 1; /* Gamertag text takes available space */
+    font-size: 16px;
+    color: var(--light);
+}
+
+.gt-gamertag-container ul li span:last-child {
+    background-color: #28a745; /* Matches your notification green */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.gt-gamertag-container ul li span:last-child:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.gt-gamertag-container ul li.selected {
+    background-color: rgba(91, 201, 91, 0.3); /* Light green for selected state */
+    font-weight: bold;
+}
+
+.gt-gamertag-container ul li.selected span:first-child {
+    color: var(--accent-light);
+}
+
+.gt-gamertag-container ul li.selected span:last-child {
+    background-color: #1e7e34; /* Even darker green for selected button */
+}
