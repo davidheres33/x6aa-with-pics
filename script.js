@@ -102,22 +102,41 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const gamertags = data.split('\n').filter(tag => tag.trim() !== '');
                 const ul = document.createElement('ul');
+
                 gamertags.forEach(tag => {
                     const li = document.createElement('li');
-                    li.textContent = tag.trim();
-                    li.style.cursor = 'pointer';
+
+                    // Create gamertag text
+                    const gamertagSpan = document.createElement('span');
+                    gamertagSpan.textContent = tag.trim();
+
+                    // Create select button
+                    const selectButton = document.createElement('span');
+                    selectButton.textContent = 'Select';
+
+                    // Hover effect for the entire list item
+                    li.addEventListener('mouseover', () => {
+                        selectButton.classList.add('hover');
+                    });
+                    li.addEventListener('mouseout', () => {
+                        selectButton.classList.remove('hover');
+                        if (selectedGamertag !== tag.trim()) {
+                            selectButton.classList.remove('selected');
+                        }
+                    });
+
+                    // Click event for selecting gamertag
                     li.addEventListener('click', () => {
-                        // Set selected gamertag and update UI
                         selectedGamertag = tag.trim();
-                        // Highlight selected gamertag
                         ul.querySelectorAll('li').forEach(item => {
-                            item.style.backgroundColor = '';
-                            item.style.fontWeight = '';
+                            item.classList.remove('selected');
+                            const button = item.querySelector('span:last-child');
+                            if (button) button.classList.remove('selected');
                         });
-                        li.style.backgroundColor = '#e0e0e0';
-                        li.style.fontWeight = 'bold';
-                        // Updated: Show notification with professional text
+                        li.classList.add('selected');
+                        selectButton.classList.add('selected');
                         showNotification(`${selectedGamertag} Selected Successfully!`);
+
                         // Open rareGamertagModal with 4-Letter option selected
                         const rareGamertagModal = modals.rareGamertag;
                         if (rareGamertagModal) {
@@ -139,6 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         closeModal(modals.gtFourLetter);
                     });
+
+                    li.appendChild(gamertagSpan);
+                    li.appendChild(selectButton);
                     ul.appendChild(li);
                 });
                 gamertagList.innerHTML = '';
