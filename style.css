@@ -1540,7 +1540,6 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: background 0.3s;
 }
 
 .cta-button:hover {
