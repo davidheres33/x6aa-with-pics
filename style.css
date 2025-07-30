@@ -2317,26 +2317,7 @@ a{
     margin: 0;
 }
 
-/* Info button styling */
-.info-btn {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background-color: #8a8a8a;
-    color: black;
-    border: none;
-    font-size: 20px;
-    font-family: 'Georgia', serif;
-    line-height: 26px;
-    text-align: center;
-    margin-left: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-}
+
 
 .info-btn:hover {
     transform: scale(1.1);
