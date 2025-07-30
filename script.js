@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.toggleInfo = function() {
         const infoText = document.getElementById('info-text');
         if (infoText) {
-            infoText.style.display = infoText.style.display === 'none' ? 'block' : 'none';
+            infoText.classList.toggle('hidden');
         }
     };
 
