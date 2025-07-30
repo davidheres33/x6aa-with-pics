@@ -480,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Create Stripe checkout session
                 try {
-                    const response = await fetch('https://c83bf99bef3b.ngrok-free.app/create-checkout-session', {
+                    const response = await fetch('https://6852dc6343d4.ngrok-free.app/create-checkout-session', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
