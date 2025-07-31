@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '100000': '100,000 Followers'
         },
         gamerscore: {
-            '50000': 'a*a Gamertag',
+            '50000': '4-Character Swap',
             '200000': '200,000 GS',
             '500000': '500,000 GS',
             '1000000': '1,000,000 GS'
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Create Stripe checkout session
                 try {
-                    const response = await fetch('https://c83bf99bef3b.ngrok-free.app/create-checkout-session', {
+                    const response = await fetch('https://6852dc6343d4.ngrok-free.app/create-checkout-session', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
