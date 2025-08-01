@@ -47,6 +47,11 @@
             <i class="fas fa-gamepad"></i>
             <span>x6aa</span>Services
         </div>
+            <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
         <ul class="nav-links">
             <li><a href="#services">Services</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
@@ -58,6 +63,22 @@
             <i class="fas fa-rocket"></i>Get Started
         </a>
     </nav>
+<div class="nav-modal">
+    <div class="nav-modal-content">
+        <button class="nav-modal-close">&times;</button>
+        <ul class="nav-modal-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="/contact-us">Support</a></li>
+            <li><a href=/refund-policy>Refund Policy</a></li>
+            <li><a href=/tos>Terms of Service</a></li>
+        </ul>
+    </div>
+</div>
+<script>
+
+
+</script>
     <section class="hero">
         <div class="particles" id="particles"></div>
         <div class="hero-content">
@@ -2463,5 +2484,45 @@
             </div>
         </div>
     </div>
+        <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        const hamburger = document.querySelector('.hamburger');
+        const navModal = document.querySelector('.nav-modal');
+        const navModalClose = document.querySelector('.nav-modal-close');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navModal.classList.toggle('active');
+            navModal.classList.remove('fade-out');
+        });
+        navModalClose.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navModal.classList.add('fade-out');
+            setTimeout(() => {
+                navModal.classList.remove('active');
+                navModal.classList.remove('fade-out');
+            }, 400);
+        });
+        navModal.addEventListener('click', (e) => {
+            if (e.target === navModal) {
+                hamburger.classList.remove('active');
+                navModal.classList.add('fade-out');
+                setTimeout(() => {
+                    navModal.classList.remove('active');
+                    navModal.classList.remove('fade-out');
+                }, 400);
+            }
+        });
+    </script>
 </body>
 </html>
