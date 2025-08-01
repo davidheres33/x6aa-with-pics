@@ -2569,3 +2569,46 @@ a{
 .gt-gamertag-container ul li.selected span:last-child {
     background-color: #1e7e34; /* Even darker green for selected button */
 }
+
+.back-to-top {
+    position: fixed !important;
+    bottom: 2rem !important;
+    right: 2rem !important;
+    width: 50px !important;
+    height: 50px !important;
+    background: linear-gradient(135deg, #00ff88, #33ff99) !important;
+    color: white !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: var(--transition) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    z-index: 1000 !important;
+    box-shadow: var(--neon) !important;
+}
+
+.back-to-top i {
+    font-size: 1rem !important; /* Smaller arrow size to match html1 */
+    color: white !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important; /* Remove any default padding */
+    margin: 0 !important; /* Remove any default margin */
+}
+
+.back-to-top.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.back-to-top:hover {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light)) !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 0 15px rgba(91, 201, 91, 0.8) !important;
+}
