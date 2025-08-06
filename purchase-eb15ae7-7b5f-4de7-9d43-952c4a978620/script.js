@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '100000': '100,000 Followers'
         },
         gamerscore: {
-            '50000': '4-Character Swap',
+            '50000': 'Custom LFG Promotion',
             '200000': '200,000 GS',
             '500000': '500,000 GS',
             '1000000': '1,000,000 GS'
