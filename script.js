@@ -236,6 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '4-letter': '4-Letter Gamertag',
             '3-Character': '3-Character Gamertag',
             '3-Letter': '3-Letter Gamertag',
+            '2-Letter': '2-Letter Gamertag',
             'word': 'Word Gamertag'
         },
         codPoints: {
@@ -641,4 +642,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 
