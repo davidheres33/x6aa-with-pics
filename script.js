@@ -264,10 +264,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const discountRate = document.getElementById('discount-rate');
 
     function updatePrice() {
+        const followerInput = document.querySelector('.follower-input');
+        const decreaseBtn = document.querySelector('.control-btn.decrease');
+        const increaseBtn = document.querySelector('.control-btn.increase');
+        const selectedFollowers = document.getElementById('selected-followers');
+        const totalPrice = document.getElementById('total-price');
+        const discountRate = document.getElementById('discount-rate');
+        const warningMessage = document.getElementById('follower-warning');
+
         let followers = parseInt(followerInput.value);
-        if (isNaN(followers) || followers < 1000) followers = 1000;
-        if (followers > 1000000) followers = 1000000;
-        followerInput.value = followers;
+
+        if (isNaN(followers) || followers < 1000) {
+            warningMessage.style.display = 'block';
+            warningMessage.style.opacity = '1';
+            selectedFollowers.textContent = '0';
+            totalPrice.textContent = '$0.00';
+            discountRate.textContent = '0% off';
+            decreaseBtn.disabled = true;
+            increaseBtn.disabled = followers >= 1000000;
+            return;
+        } else {
+            warningMessage.style.display = 'none';
+            warningMessage.style.opacity = '0';
+        }
+
+        if (followers > 1000000) {
+            followers = 1000000;
+            followerInput.value = followers;
+        }
 
         let discount = 0;
         if (followers >= 10000 && followers < 50000) discount = 10;
@@ -289,6 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const handleIncrease = (e) => {
             e.preventDefault();
             let value = parseInt(followerInput.value);
+            if (isNaN(value) || value < 1000) value = 1000;
             if (value < 1000000) {
                 followerInput.value = value + 1000;
                 updatePrice();
@@ -489,10 +514,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (key === 'followers') {
                     const totalPriceElement = modal.querySelector('#total-price');
                     const selectedFollowersElement = modal.querySelector('#selected-followers');
+                    const warningMessage = document.getElementById('follower-warning');
+                    
                     if (!totalPriceElement || !selectedFollowersElement) {
                         alert('Error: Unable to retrieve price or follower amount.');
                         return;
                     }
+                    
+                    const followers = parseInt(selectedFollowersElement.textContent.replace(/,/g, ''));
+                    if (isNaN(followers) || followers < 1000) {
+                        warningMessage.style.display = 'block';
+                        warningMessage.style.opacity = '1';
+                        followerInput.classList.remove('shake');
+                        void followerInput.offsetWidth;
+                        followerInput.classList.add('shake');
+                        followerInput.style.border = '2px solid #ff4444';
+                        setTimeout(() => followerInput.classList.remove('shake'), 500);
+                        followerInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return;
+                    }
+
                     price = parseFloat(totalPriceElement.textContent.replace('$', '')) || 0;
                     amount = selectedFollowersElement.textContent.replace(/,/g, '');
                     displayName = `${productName} - ${amount} Followers`;
