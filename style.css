@@ -2646,3 +2646,6 @@ a {
 .summary-row.discount span:last-child {
     text-shadow: var(--glow);
 }
+.warning-message {
+    transition: opacity 0.3s ease;
+}
