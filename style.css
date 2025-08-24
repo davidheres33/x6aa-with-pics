@@ -1559,7 +1559,6 @@ footer {
     height: 20px;
     cursor: pointer;
     z-index: 1002;
-    
 }
 
 .hamburger span {
@@ -1593,7 +1592,7 @@ footer {
     backdrop-filter: blur(10px);
     z-index: 1001;
     align-items: center;
-    justify-content: flex-start; /* Align to left for window-like panel */
+    justify-content: flex-start;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -1603,27 +1602,24 @@ footer {
 }
 
 .nav-modal-content {
-    background: linear-gradient(145deg, var(--gray) 0%, var(--darker) 100%); /* Subtle, professional gradient */
+    background: linear-gradient(145deg, var(--gray) 0%, var(--darker) 100%);
     width: 80%;
-    max-width: 320px; /* Narrow for window-like effect */
-    height: 100%; /* Full height for sidebar */
-    padding: 3rem 2rem; /* Clean, spacious padding */
-    border-radius: 0 12px 12px 0; /* Rounded right edges for window look */
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Minimal border */
-    box-shadow: 
-        4px 0 20px rgba(0, 0, 0, 0.5), /* Right shadow for depth */
-        0 0 8px rgba(91, 201, 91, 0.15); /* Subtle neon accent */
-    transform: translateX(-100%); /* Start off-screen left */
-    animation: slideInFromLeft 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; /* Smooth slide-in */
+    max-width: 320px;
+    height: 100%;
+    padding: 3rem 2rem;
+    border-radius: 0 12px 12px 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5), 0 0 8px rgba(91, 201, 91, 0.15);
+    transform: translateX(-100%);
+    animation: slideInFromLeft 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
     position: fixed;
     top: 0;
     left: 0;
-    overflow-y: auto; /* Scrollable if needed */
-    backdrop-filter: blur(4px); /* Subtle frosted glass */
+    overflow-y: auto;
+    backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
 }
 
-/* Subtle inner texture for depth */
 .nav-modal-content::after {
     content: '';
     position: absolute;
@@ -1638,45 +1634,39 @@ footer {
 }
 
 .nav-modal-close {
-    background: rgba(255, 255, 255, 0.05); /* Subtle background for visibility */
+    background: rgba(255, 255, 255, 0.05);
     border: none;
     cursor: pointer;
     position: absolute;
     top: 1.5rem;
-    left: 1.5rem; /* Top-left corner */
-    width: 32px; /* Slightly larger for prominence */
+    left: 1.5rem;
+    width: 32px;
     height: 32px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 7px; /* Space between hamburger lines */
+    gap: 7px;
     transition: var(--transition);
     z-index: 2;
-    border-radius: 4px; /* Rounded for polish */
+    border-radius: 4px;
 }
 
-/* Hamburger lines */
 .nav-modal-close::before,
 .nav-modal-close::after,
 .nav-modal-close span {
     content: '';
     display: block;
-    width: 24px; /* Clean line length */
+    width: 24px;
     height: 3px;
-    background-color: var(--light); /* Matches site’s light color */
+    background-color: var(--light);
     border-radius: 2px;
     transition: var(--transition);
-    margin: 0 auto; /* Center lines */
+    margin: 0 auto;
 }
 
-.nav-modal-close span {
-    display: block;
-}
-
-/* Transform to "X" when modal is active */
 .nav-modal.active .nav-modal-close::before {
     transform: rotate(45deg) translate(7px, 7px);
-    background-color: var(--accent); /* Subtle green accent */
+    background-color: var(--accent);
 }
 
 .nav-modal.active .nav-modal-close::after {
@@ -1685,24 +1675,24 @@ footer {
 }
 
 .nav-modal.active .nav-modal-close span {
-    opacity: 0; /* Hide middle line for "X" */
+    opacity: 0;
 }
 
 .nav-modal-close:hover {
-    background: rgba(91, 201, 91, 0.1); /* Subtle hover glow */
+    background: rgba(91, 201, 91, 0.1);
 }
 
 .nav-modal-close:hover::before,
 .nav-modal-close:hover::after,
 .nav-modal-close:hover span {
-    background-color: var(--accent); /* Matches site’s accent */
+    background-color: var(--accent);
 }
 
 .nav-modal-links {
     display: flex;
     flex-direction: column;
-    gap: 2rem; /* Spacious for clarity */
-    margin-top: 5rem; /* Space for top-left close button */
+    gap: 2rem;
+    margin-top: 5rem;
     position: relative;
     z-index: 1;
 }
@@ -1710,22 +1700,22 @@ footer {
 .nav-modal-links a {
     color: var(--light);
     text-decoration: none;
-    font-family: 'Orbitron', sans-serif; /* Matches site’s futuristic font */
-    font-weight: 500; /* Professional weight */
-    font-size: 1.1rem; /* Clear and readable */
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+    font-size: 1.1rem;
     transition: var(--transition);
-    text-align: left; /* Left-aligned for sidebar */
+    text-align: left;
     padding: 0.6rem 1rem;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.03); /* Subtle background */
+    background: rgba(255, 255, 255, 0.03);
     position: relative;
     overflow: hidden;
 }
 
 .nav-modal-links a:hover {
-    color: #00ff88; /* Matches site’s accent, used sparingly */
-    background: rgba(91, 201, 91, 0.1); /* Subtle hover glow */
-    transform: translateX(5px); /* Slight slide */
+    color: #00ff88;
+    background: rgba(91, 201, 91, 0.1);
+    transform: translateX(5px);
 }
 
 .nav-modal-links a::before {
@@ -1744,21 +1734,21 @@ footer {
 }
 
 .nav-modal-links .cta-button {
-    background: linear-gradient(135deg, var(--primary), var(--accent)); /* Matches site’s CTA */
+    background: linear-gradient(135deg, var(--primary), var(--accent));
     padding: 0.8rem 2rem;
-    border-radius: 25px; /* Matches site’s button style */
+    border-radius: 25px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(91, 201, 91, 0.3); /* Subdued glow */
-    position: relative;
+    box-shadow: 0 0 10px rgba(91, 201, 91, 0.3);
+    position:_languages: en
     overflow: hidden;
     display: inline-flex;
     width: fit-content;
-    align-self: flex-start; /* Left-aligned */
+    align-self: flex-start;
     font-family: 'Orbitron', sans-serif;
     font-weight: 600;
     font-size: 1rem;
-    color: #0a0a0a; /* Matches site’s CTA text */
+    color: #0a0a0a;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -1779,9 +1769,9 @@ footer {
 }
 
 .nav-modal-links .cta-button:hover {
-    transform: translateY(-3px); /* Subtle lift */
-    box-shadow: 0 0 15px rgba(91, 201, 91, 0.4); /* Controlled glow */
-    background: #00cc66; /* Matches site’s hover color */
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(91, 201, 91, 0.4);
+    background: #00cc66;
 }
 
 @keyframes slideInFromLeft {
@@ -1808,43 +1798,6 @@ footer {
 
 .nav-modal.fade-out {
     animation: slideOutToLeft 0.4s ease-out forwards;
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-    .nav-modal-content {
-        width: 85%;
-        max-width: 280px; /* Compact for mobile */
-        padding: 2rem 1.5rem;
-        box-shadow: 
-            4px 0 15px rgba(0, 0, 0, 0.4), 
-            0 0 6px rgba(91, 201, 91, 0.1);
-    }
-
-    .nav-modal-links a {
-        font-size: 0.95rem;
-        padding: 0.5rem 0.8rem;
-    }
-
-    .nav-modal-links .cta-button {
-        padding: 0.7rem 1.5rem;
-        font-size: 0.9rem;
-    }
-
-    .nav-modal-close {
-        top: 1rem;
-        left: 1rem;
-        width: 26px;
-        height: 26px;
-        gap: 5px;
-    }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-    .nav-modal-content {
-        max-width: 300px;
-        padding: 2.5rem 1.8rem;
-    }
 }
 
 .shake {
@@ -2366,7 +2319,6 @@ a {
 
 @media (max-width: 768px) {
     .hero {
-        padding-top: 2rem;
         padding: 10rem 5% 4rem;
         margin-top: 0 !important;
         padding-top: 1rem !important;
@@ -2375,9 +2327,6 @@ a {
     }
 
     .nav-links {
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
         display: none;
     }
 
@@ -2387,9 +2336,6 @@ a {
     }
 
     .service-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
         padding: 0 1rem;
@@ -2512,7 +2458,6 @@ a {
 
     body {
         margin-top: 0 !important;
-        padding-top: 0 !important;
         padding-top: 80px !important;
         transition: var(--transition);
     }
@@ -2555,6 +2500,14 @@ a {
 
     .announcement-close {
         font-size: 1.3rem;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+    }
+
+    .hero-content p {
+        font-size: clamp(0.9rem, 2vw, 1rem);
     }
 }
 
@@ -2600,4 +2553,9 @@ a {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
     }
+}
+.cta-section .btn.btn-primary.pulse.fade-in.delay-2 {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
