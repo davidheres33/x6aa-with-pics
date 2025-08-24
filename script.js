@@ -263,19 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalPrice = document.getElementById('total-price');
     const discountRate = document.getElementById('discount-rate');
 
-    // Debounce function to prevent rapid taps
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
     function updatePrice() {
         let followers = parseInt(followerInput.value);
         if (isNaN(followers) || followers < 1000) followers = 1000;
@@ -299,50 +286,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (followerInput && decreaseBtn && increaseBtn) {
-        // Debounced increase function
-        const handleIncrease = debounce(() => {
+        increaseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             let value = parseInt(followerInput.value);
             if (value < 1000000) {
                 followerInput.value = value + 1000;
                 updatePrice();
             }
-        }, 200);
+        });
 
-        // Debounced decrease function
-        const handleDecrease = debounce(() => {
+        decreaseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             let value = parseInt(followerInput.value);
             if (value > 1000) {
                 followerInput.value = value - 1000;
                 updatePrice();
             }
-        }, 200);
-
-        // Handle click and touchend for increase
-        increaseBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleIncrease();
         });
-        increaseBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            handleIncrease();
-        }, { passive: false });
 
-        // Handle click and touchend for decrease
-        decreaseBtn.addEventListener('click', (e) => {
+        followerInput.addEventListener('input', (e) => {
             e.preventDefault();
-            handleDecrease();
-        });
-        decreaseBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            handleDecrease();
-        }, { passive: false });
-
-        // Handle input changes
-        followerInput.addEventListener('input', () => {
             updatePrice();
         });
 
-        // Initialize price
+        [increaseBtn, decreaseBtn, followerInput].forEach(element => {
+            element.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                element.focus();
+            }, { passive: false });
+        });
+
         updatePrice();
     }
 
@@ -393,67 +366,78 @@ document.addEventListener('DOMContentLoaded', () => {
             selector: '#followersModal .followers-purchase-btn',
             inputs: ['followers-gamertag'],
             tosCheckbox: 'followers-tos-agreement',
-            productName: 'Profile Visibility Boost'
+            productName: 'Profile Visibility Boost',
+            productType: 'followers'
         },
         gamerscore: {
             selector: '#gamerscoreModal .gamerscore-purchase-btn',
             inputs: ['gamerscore-gamertag'],
             tosCheckbox: 'gamerscore-tos-agreement',
-            productName: 'Gamerscore Enhancement'
+            productName: 'Gamerscore Enhancement',
+            productType: 'gamerscore'
         },
         gamertag: {
             selector: '#gamertagModal .gamertag-purchase-btn',
             inputs: ['gamertag-email'],
             tosCheckbox: 'gamertag-tos-agreement',
-            productName: 'Rare Gamertag Reservations'
+            productName: 'Gamertag Autoclaimer',
+            productType: 'gamertag'
         },
         lfg: {
             selector: '#lfgModal .lfg-purchase-btn',
             inputs: ['lfg-email'],
             tosCheckbox: 'lfg-tos-agreement',
-            productName: 'LFG Promotion'
+            productName: 'LFG Promotion',
+            productType: 'lfg'
         },
         rareGamertag: {
             selector: '#rareGamertagModal .rare-gamertag-purchase-btn',
             inputs: ['rare-gamertag-email'],
             tosCheckbox: 'rare-gamertag-tos-agreement',
-            productName: 'Rare Xbox Gamertag'
+            productName: 'Rare Xbox Gamertag',
+            productType: 'rareGamertag'
         },
         codPoints: {
             selector: '#codPointsModal .codpoints-purchase-btn',
             inputs: ['codpoints-gamertag'],
             tosCheckbox: 'codpoints-tos-agreement',
-            productName: 'Call of Duty COD Points'
+            productName: 'Call of Duty COD Points',
+            productType: 'codPoints'
         },
         sharkCard: {
             selector: '#sharkCardModal .shark-card-purchase-btn',
             inputs: ['sharkcard-gamertag'],
             tosCheckbox: 'sharkcard-tos-agreement',
-            productName: 'GTA 5 Cash'
+            productName: 'GTA 5 Cash',
+            productType: 'sharkCard'
         },
         followerBot: {
             selector: '#followerBotModal .follower-bot-purchase-btn',
             inputs: ['follower-bot-email'],
             tosCheckbox: 'follower-bot-tos-agreement',
-            productName: 'Follower Boost Manager'
+            productName: 'Follower Boost Manager',
+            productType: 'followerBot'
         },
         messageSpammer: {
             selector: '#messageSpammerModal .message-spammer-purchase-btn',
             inputs: ['message-spammer-email'],
             tosCheckbox: 'message-spammer-tos-agreement',
-            productName: 'Message Sender'
+            productName: 'Message Sender',
+            productType: 'messageSpammer'
         },
         profilePicture: {
             selector: '#profilePictureCheckoutModal .profile-picture-checkout-btn',
             inputs: ['profile-picture-checkout-gamertag', 'profile-picture-checkout-link'],
             tosCheckbox: 'profile-picture-checkout-tos-agreement',
-            productName: 'Classic Xbox Profile Picture'
+            productName: 'Classic Xbox Profile Picture',
+            productType: 'profilePicture'
         },
         forzaCredits: {
             selector: '#forzaCreditsModal .forza-credits-purchase-btn',
             inputs: ['forza-credits-gamertag'],
             tosCheckbox: 'forza-credits-tos-agreement',
-            productName: 'Forza Horizon 5 Credits'
+            productName: 'Forza Horizon 5 Credits',
+            productType: 'forzaCredits'
         }
     };
 
@@ -463,6 +447,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const modal = this.closest('.modal-overlay');
                 if (!modal) return;
+                
+                const productType = purchaseHandlers[key].productType;
+                const productName = purchaseHandlers[key].productName;
+                
                 const inputs = purchaseHandlers[key].inputs.map(id => document.getElementById(id));
                 const tosCheckbox = document.getElementById(purchaseHandlers[key].tosCheckbox);
                 let hasError = false;
@@ -493,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     hasError = true;
                 }
 
-                let price, productName, amount;
+                let price, displayName, amount;
                 if (key === 'followers') {
                     const totalPriceElement = modal.querySelector('#total-price');
                     const selectedFollowersElement = modal.querySelector('#selected-followers');
@@ -503,7 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     price = parseFloat(totalPriceElement.textContent.replace('$', '')) || 0;
                     amount = selectedFollowersElement.textContent.replace(/,/g, '');
-                    productName = `${purchaseHandlers[key].productName} - ${amount} Followers`;
+                    displayName = `${productName} - ${amount} Followers`;
                     if (isNaN(price) || price <= 0) {
                         alert('Error: Invalid price.');
                         hasError = true;
@@ -516,9 +504,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         price = parseFloat(selectedPackage.dataset.price);
                         amount = selectedPackage.getAttribute('data-amount');
-                        productName = (amount === '4-letter' && selectedGamertag && key === 'rareGamertag') 
-                            ? selectedGamertag 
-                            : (packageData[key] ? packageData[key][amount] || amount : amount);
+                        
+                        if (amount === '4-letter' && selectedGamertag && key === 'rareGamertag') {
+                            displayName = `${productName}: ${selectedGamertag}`;
+                        } else if (packageData[key] && packageData[key][amount]) {
+                            displayName = `${productName} - ${packageData[key][amount]}`;
+                        } else {
+                            displayName = productName;
+                        }
                     }
                 }
 
@@ -554,7 +547,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const data = {
-                    productName,
+                    productName: displayName,
+                    productType: productType,
+                    subscriptionLength: amount,
                     price,
                     userIp,
                     country,
