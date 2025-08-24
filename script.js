@@ -286,22 +286,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (followerInput && decreaseBtn && increaseBtn) {
-        increaseBtn.addEventListener('click', (e) => {
+        const handleIncrease = (e) => {
             e.preventDefault();
             let value = parseInt(followerInput.value);
             if (value < 1000000) {
                 followerInput.value = value + 1000;
                 updatePrice();
             }
-        });
+        };
 
-        decreaseBtn.addEventListener('click', (e) => {
+        const handleDecrease = (e) => {
             e.preventDefault();
             let value = parseInt(followerInput.value);
             if (value > 1000) {
                 followerInput.value = value - 1000;
                 updatePrice();
             }
+        };
+
+        ['click', 'touchend'].forEach(eventType => {
+            increaseBtn.addEventListener(eventType, handleIncrease);
+            decreaseBtn.addEventListener(eventType, handleDecrease);
         });
 
         followerInput.addEventListener('input', (e) => {
@@ -309,11 +314,10 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePrice();
         });
 
-        [increaseBtn, decreaseBtn, followerInput].forEach(element => {
+        [increaseBtn, decreaseBtn].forEach(element => {
             element.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                element.focus();
-            }, { passive: false });
+                e.stopPropagation();
+            }, { passive: true });
         });
 
         updatePrice();
