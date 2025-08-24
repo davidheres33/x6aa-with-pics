@@ -2559,3 +2559,90 @@ a {
     visibility: visible !important;
     opacity: 1 !important;
 }
+
+.custom-follower-input {
+    background-color: var(--dark);
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-follower-input h4 {
+    color: var(--light);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 5px rgba(91, 201, 91, 0.3);
+}
+
+.follower-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    touch-action: manipulation; /* Mobil cihazlarda zoom engellemek için */
+}
+
+.control-btn {
+    background: linear-gradient(var(--primary), var(--primary), var(--accent));
+    border: none;
+    border-radius: 25px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--neon);
+    touch-action: manipulation; /* Mobil cihazlarda zoom engellemek için */
+}
+
+.control-btn:hover {
+    background: #00cc66;
+    transform: translateY(-2px);
+    box-shadow: var(--glow);
+}
+
+.control-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.follower-input {
+    width: 120px;
+    padding: 0.8rem;
+    background-color: var(--darker);
+    border: 1px solid var(--light-gray);
+    border-radius: 5px;
+    color: var(--light);
+    font-size: 1rem;
+    text-align: center;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+    touch-action: manipulation; /* Mobil cihazlarda zoom engellemek için */
+}
+
+.follower-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(91, 201, 91, 0.3);
+}
+
+.follower-range-info {
+    color: #aaa;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.summary-row.discount {
+    color: var(--accent-light);
+    font-weight: 600;
+}
+
+.summary-row.discount span:last-child {
+    text-shadow: var(--glow);
+}
