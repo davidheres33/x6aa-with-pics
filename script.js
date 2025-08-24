@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Stripe with your public key
     const stripe = Stripe('pk_live_51RHruF06XnUtC0HX0w4CWzfNMGATA0skgovfEEJOOyb5PpOlWx5rfOCv3JdugRmy1AUMrCC1xsxfhBvpiI6jGX3W00UvAfDAeL');
 
-    // Modal elements
     const modals = {
         followers: document.getElementById('followersModal'),
         gamerscore: document.getElementById('gamerscoreModal'),
@@ -18,19 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
         gtFourLetter: document.getElementById('gt-fourLetterModal')
     };
 
-    // Store selected gamertag
     let selectedGamertag = null;
 
-    // Open modal function
     function openModal(modal) {
         if (modal) {
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            // Fetch gamertags if the 4-Letter Gamertag modal is opened
             if (modal.id === 'gt-fourLetterModal') {
                 fetchGtGamertags();
             }
-            // Update package display in rareGamertagModal if 4-Letter is selected
             if (modal.id === 'rareGamertagModal') {
                 const activeOption = modal.querySelector('.package-option.active');
                 if (activeOption && activeOption.getAttribute('data-amount') === '4-letter' && selectedGamertag) {
@@ -43,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Close modal function
     function closeModal(modal) {
         if (modal) {
             modal.style.display = 'none';
@@ -51,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Modal close buttons
     document.querySelectorAll('.modal-close, .gt-modal-close').forEach(button => {
         button.addEventListener('click', () => {
             const modal = button.closest('.modal-overlay, .gt-modal-overlay');
@@ -59,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Click outside modal to close
     Object.values(modals).forEach(modal => {
         if (modal) {
             modal.addEventListener('click', (e) => {
@@ -70,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Function to show temporary notification
     function showNotification(message) {
         const notification = document.createElement('div');
         notification.className = 'gamertag-notification';
@@ -80,11 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
             notification.style.opacity = '0';
             setTimeout(() => {
                 notification.remove();
-            }, 300); // Match transition duration
-        }, 3000); // Show for 3 seconds
+            }, 300);
+        }, 3000);
     }
 
-    // Fetch gamertags for 4-Letter Gamertag modal
     function fetchGtGamertags() {
         const gamertagUrl = 'https://raw.githubusercontent.com/x6aa/gamertags/refs/heads/main/gamertags.txt';
         const gamertagList = document.getElementById('gt-gamertag-list');
@@ -105,16 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 gamertags.forEach(tag => {
                     const li = document.createElement('li');
-
-                    // Create gamertag text
                     const gamertagSpan = document.createElement('span');
                     gamertagSpan.textContent = tag.trim();
-
-                    // Create select button
                     const selectButton = document.createElement('span');
                     selectButton.textContent = 'Select';
 
-                    // Hover effect for the entire list item
                     li.addEventListener('mouseover', () => {
                         selectButton.classList.add('hover');
                     });
@@ -125,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
 
-                    // Click event for selecting gamertag
                     li.addEventListener('click', () => {
                         selectedGamertag = tag.trim();
                         ul.querySelectorAll('li').forEach(item => {
@@ -137,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         selectButton.classList.add('selected');
                         showNotification(`${selectedGamertag} Selected Successfully!`);
 
-                        // Open rareGamertagModal with 4-Letter option selected
                         const rareGamertagModal = modals.rareGamertag;
                         if (rareGamertagModal) {
                             const fourLetterOption = rareGamertagModal.querySelector('.package-option[data-amount="4-letter"]');
@@ -172,14 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // Add event listener for 4-Letter Gamertag info button
     document.querySelectorAll('.gt-info-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             openModal(modals.gtFourLetter);
         });
     });
 
-    // Package selection logic
     function setupPackageSelection(modalId, packageData) {
         const modal = document.getElementById(modalId);
         if (!modal) return;
@@ -201,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Package data for display
     const packageData = {
         followers: {
             '1000': '1,000 Followers',
@@ -271,14 +250,75 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Setup package selection for each modal
     Object.keys(modals).forEach(key => {
         if (packageData[key]) {
             setupPackageSelection(`${key}Modal`, packageData[key]);
         }
     });
 
-    // Button event listeners for opening modals
+    const followerInput = document.querySelector('.follower-input');
+    const decreaseBtn = document.querySelector('.control-btn.decrease');
+    const increaseBtn = document.querySelector('.control-btn.increase');
+    const selectedFollowers = document.getElementById('selected-followers');
+    const totalPrice = document.getElementById('total-price');
+    const discountRate = document.getElementById('discount-rate');
+
+    function updatePrice() {
+        let followers = parseInt(followerInput.value);
+        if (isNaN(followers) || followers < 1000) followers = 1000;
+        if (followers > 1000000) followers = 1000000;
+        followerInput.value = followers;
+
+        let discount = 0;
+        if (followers >= 10000 && followers < 50000) discount = 10;
+        else if (followers >= 50000 && followers < 100000) discount = 20;
+        else if (followers >= 100000) discount = 30;
+
+        const basePrice = (followers / 1000) * 2.99;
+        const discountedPrice = basePrice * (1 - discount / 100);
+
+        selectedFollowers.textContent = followers.toLocaleString();
+        discountRate.textContent = discount > 0 ? `${discount}% off` : '0% off';
+        totalPrice.textContent = `$${discountedPrice.toFixed(2)}`;
+
+        decreaseBtn.disabled = followers <= 1000;
+        increaseBtn.disabled = followers >= 1000000;
+    }
+
+    if (followerInput && decreaseBtn && increaseBtn) {
+        increaseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            let value = parseInt(followerInput.value);
+            if (value < 1000000) {
+                followerInput.value = value + 1000;
+                updatePrice();
+            }
+        });
+
+        decreaseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            let value = parseInt(followerInput.value);
+            if (value > 1000) {
+                followerInput.value = value - 1000;
+                updatePrice();
+            }
+        });
+
+        followerInput.addEventListener('input', (e) => {
+            e.preventDefault();
+            updatePrice();
+        });
+
+        [increaseBtn, decreaseBtn, followerInput].forEach(element => {
+            element.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                element.focus();
+            }, { passive: false });
+        });
+
+        updatePrice();
+    }
+
     document.querySelectorAll('.followers-purchase-btn').forEach(btn => {
         btn.addEventListener('click', () => openModal(modals.followers));
     });
@@ -313,7 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => openModal(modals.forzaCredits));
     });
 
-    // Payment method selection
     document.querySelectorAll('.method-option').forEach(option => {
         option.addEventListener('click', () => {
             const parent = option.closest('.method-options');
@@ -322,7 +361,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Purchase handlers for Stripe checkout
     const purchaseHandlers = {
         followers: {
             selector: '#followersModal .followers-purchase-btn',
@@ -392,7 +430,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Handle purchase button clicks with Stripe checkout
     Object.keys(purchaseHandlers).forEach(key => {
         document.querySelectorAll(purchaseHandlers[key].selector).forEach(button => {
             button.addEventListener('click', async function(e) {
@@ -401,11 +438,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!modal) return;
                 const inputs = purchaseHandlers[key].inputs.map(id => document.getElementById(id));
                 const tosCheckbox = document.getElementById(purchaseHandlers[key].tosCheckbox);
-                const selectedPackage = modal.querySelector('.package-option.active');
                 let hasError = false;
                 let firstInvalidElement = null;
 
-                // Validate inputs
                 inputs.forEach(input => {
                     if (!input.value) {
                         input.classList.remove('shake');
@@ -420,7 +455,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                // Validate ToS checkbox
                 if (!tosCheckbox.checked) {
                     tosCheckbox.classList.remove('shake', 'red-neon-glow');
                     void tosCheckbox.offsetWidth;
@@ -432,33 +466,55 @@ document.addEventListener('DOMContentLoaded', () => {
                     hasError = true;
                 }
 
-                // Scroll to first invalid element if there's an error
-                if (hasError && firstInvalidElement) {
-                    const modalContent = modal.querySelector('.modal-content');
-                    firstInvalidElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                    modalContent.scrollTop = firstInvalidElement.offsetTop - modalContent.offsetTop - 50;
+                let price, productName, amount;
+                if (key === 'followers') {
+                    const totalPriceElement = modal.querySelector('#total-price');
+                    const selectedFollowersElement = modal.querySelector('#selected-followers');
+                    if (!totalPriceElement || !selectedFollowersElement) {
+                        alert('Error: Unable to retrieve price or follower amount.');
+                        return;
+                    }
+                    price = parseFloat(totalPriceElement.textContent.replace('$', '')) || 0;
+                    amount = selectedFollowersElement.textContent.replace(/,/g, '');
+                    productName = `${purchaseHandlers[key].productName} - ${amount} Followers`;
+                    if (isNaN(price) || price <= 0) {
+                        alert('Error: Invalid price.');
+                        hasError = true;
+                    }
+                } else {
+                    const selectedPackage = modal.querySelector('.package-option.active');
+                    if (!selectedPackage) {
+                        alert('Error: No package selected.');
+                        hasError = true;
+                    } else {
+                        price = parseFloat(selectedPackage.dataset.price);
+                        amount = selectedPackage.getAttribute('data-amount');
+                        productName = (amount === '4-letter' && selectedGamertag && key === 'rareGamertag') 
+                            ? selectedGamertag 
+                            : (packageData[key] ? packageData[key][amount] || amount : amount);
+                    }
+                }
+
+                if (hasError || !price || isNaN(price)) {
+                    if (firstInvalidElement) {
+                        const modalContent = modal.querySelector('.modal-content');
+                        firstInvalidElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        modalContent.scrollTop = firstInvalidElement.offsetTop - modalContent.offsetTop - 50;
+                    }
                     return;
                 }
 
-                // Disable button during processing
                 this.classList.add('disabled');
                 this.disabled = true;
 
-                // Gather data for checkout
-                const price = parseFloat(selectedPackage.dataset.price);
-                let productName = purchaseHandlers[key].productName;
-                if (key === 'rareGamertag' && selectedPackage.getAttribute('data-amount') === '4-letter' && selectedGamertag) {
-                    productName = selectedGamertag;
-                }
                 const inputValues = {};
                 inputs.forEach(input => {
                     inputValues[input.id] = input.value;
                 });
 
-                // Fetch user IP and country
                 let userIp = 'Unknown';
                 let country = 'Unknown';
                 try {
@@ -470,16 +526,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Error fetching IP data:', error);
                 }
 
-                // Prepare data for checkout session
                 const data = {
                     productName,
                     price,
                     userIp,
                     country,
+                    amount,
                     ...inputValues
                 };
 
-                // Create Stripe checkout session
                 try {
                     const response = await fetch('https://6852dc6343d4.ngrok-free.app/create-checkout-session', {
                         method: 'POST',
@@ -490,7 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (session.url) {
                         window.location.href = session.url;
-                        if (key === 'rareGamertag' && selectedPackage.getAttribute('data-amount') === '4-letter') {
+                        if (key === 'rareGamertag' && amount === '4-letter') {
                             selectedGamertag = null;
                         }
                     } else {
@@ -508,7 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Input validation on blur
     document.querySelectorAll('input[required]').forEach(input => {
         input.addEventListener('blur', function() {
             if (!this.value) {
@@ -519,13 +573,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Download_ID function (preserved as a fallback or for other payment flows)
     window.Download_ID = function(productId) {
         console.log(`Initiating purchase for product ID: ${productId}`);
-        // Replace with additional payment gateway logic if needed
     };
 
-    // Announcement banner logic
     const announcementBanner = document.getElementById('announcementBanner');
     const closeButton = document.getElementById('closeAnnouncement');
 
@@ -546,7 +597,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     });
 
-    // Back to top button
     const backToTop = document.querySelector('.back-to-top');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 300) {
@@ -559,7 +609,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Toggle info text for Follower Boost Manager
     window.toggleInfo = function() {
         const infoText = document.getElementById('info-text');
         if (infoText) {
@@ -580,7 +629,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Newsletter form submission
     const newsletterForm = document.querySelector('.newsletter-form');
     if (newsletterForm) {
         newsletterForm.addEventListener('submit', (e) => {
@@ -592,7 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Service tab filtering
     const tabButtons = document.querySelectorAll('.tab-button');
     const serviceSections = document.querySelectorAll('.home-demo');
     tabButtons.forEach(button => {
@@ -611,7 +658,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Initialize VanillaTilt for cards
     if (typeof VanillaTilt !== 'undefined') {
         VanillaTilt.init(document.querySelectorAll('.item'), {
             max: 15,
@@ -621,7 +667,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Particle animation
     if (typeof particlesJS !== 'undefined') {
         particlesJS('particles', {
             particles: {
@@ -642,5 +687,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-
