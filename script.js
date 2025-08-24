@@ -263,6 +263,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalPrice = document.getElementById('total-price');
     const discountRate = document.getElementById('discount-rate');
 
+    // Debounce function to prevent rapid taps
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
     function updatePrice() {
         let followers = parseInt(followerInput.value);
         if (isNaN(followers) || followers < 1000) followers = 1000;
@@ -286,36 +299,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (followerInput && decreaseBtn && increaseBtn) {
-        increaseBtn.addEventListener('click', (e) => {
-            e.preventDefault();
+        // Debounced increase function
+        const handleIncrease = debounce(() => {
             let value = parseInt(followerInput.value);
             if (value < 1000000) {
                 followerInput.value = value + 1000;
                 updatePrice();
             }
-        });
+        }, 200);
 
-        decreaseBtn.addEventListener('click', (e) => {
-            e.preventDefault();
+        // Debounced decrease function
+        const handleDecrease = debounce(() => {
             let value = parseInt(followerInput.value);
             if (value > 1000) {
                 followerInput.value = value - 1000;
                 updatePrice();
             }
-        });
+        }, 200);
 
-        followerInput.addEventListener('input', (e) => {
+        // Handle click and touchend for increase
+        increaseBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            handleIncrease();
+        });
+        increaseBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            handleIncrease();
+        }, { passive: false });
+
+        // Handle click and touchend for decrease
+        decreaseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleDecrease();
+        });
+        decreaseBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            handleDecrease();
+        }, { passive: false });
+
+        // Handle input changes
+        followerInput.addEventListener('input', () => {
             updatePrice();
         });
 
-        [increaseBtn, decreaseBtn, followerInput].forEach(element => {
-            element.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                element.focus();
-            }, { passive: false });
-        });
-
+        // Initialize price
         updatePrice();
     }
 
