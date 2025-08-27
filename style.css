@@ -1355,6 +1355,7 @@ footer {
     gap: 0.8rem;
 }
 
+
 .method-option {
     flex: 1;
     background-color: var(--darker);
@@ -2648,4 +2649,48 @@ a {
 }
 .warning-message {
     transition: opacity 0.3s ease;
+}
+
+.method-option[data-method="cashapp"] {
+    flex: 1;
+    background-color: var(--darker);
+    border: 1px solid var(--light-gray);
+    border-radius: 5px;
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.method-option[data-method="cashapp"] svg {
+    font-size: 20rem; /* Matches the size of other method icons */
+    margin-bottom: 0.5rem;
+    width: 2.8rem; /* Ensure SVG scales to match font-size */
+    height: 2.8rem; /* Ensure SVG scales to match font-size */
+    fill: #aaa; /* Matches the color of other method icons */
+}
+
+.method-option[data-method="cashapp"] span {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.method-option[data-method="cashapp"].active {
+    border-color: var(--accent);
+    background-color: rgba(91, 201, 91, 0.1);
+}
+
+.method-option[data-method="cashapp"].active svg,
+.method-option[data-method="cashapp"].active span {
+    fill: var(--accent); /* Changes SVG fill to accent color when active */
+    color: var(--accent); /* Changes text to accent color when active */
+}
+
+/* Optional: Hover effect to match other method-options (if not already inherited) */
+.method-option[data-method="cashapp"]:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
 }
